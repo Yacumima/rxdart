@@ -608,7 +608,8 @@ class Observable<T> extends Stream<T> {
   ///
   /// If the retry count is not specified, it retries indefinitely. If the retry
   /// count is met, but the Stream has not terminated successfully, a
-  /// [RetryError] will be thrown.
+  /// [RetryError] will be thrown. The RetryError will contain all of the Errors
+  /// and StackTraces that caused the failure.
   ///
   /// ### Example
   ///
@@ -1816,14 +1817,16 @@ class Observable<T> extends Stream<T> {
   Observable<T> repeat(int repeatCount) =>
       transform(new RepeatStreamTransformer<T>(repeatCount));
 
+  /// Deprecated. Please use [cast] instead.
   ///
   /// Adapt this stream to be a `Stream<R>`.
   ///
   /// This stream is wrapped as a `Stream<R>` which checks at run-time that
   /// each data event emitted by this stream is also an instance of [R].
-  ///
   @override
-  Observable<R> retype<R>() => new Observable<R>(stream.retype<R>());
+  @deprecated
+  Observable<R> retype<R>() =>
+      new Observable<R>(stream.retype<R>()); // ignore: deprecated_member_use
 
   /// Returns an Observable that, when the specified sample stream emits
   /// an item or completes, emits the most recently emitted item (if any)
